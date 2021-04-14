@@ -66,6 +66,7 @@ class Blockchain:
             block_index += 1
         return True
 
+
 # this whole block of code needs refactoring
 app = Flask(__name__)
 blockchain = Blockchain()
@@ -90,3 +91,10 @@ def mine_block():
 
 
 @app.route('/get_chain', methods=['GET'])
+def get_chain():
+    response = {
+        'chain': blockchain.chain,
+        'length': len(blockchain.chain)
+    }
+
+    return jsonify(response), 200
