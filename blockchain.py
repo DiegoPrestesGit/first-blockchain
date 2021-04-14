@@ -29,8 +29,8 @@ class Blockchain:
 
         while check_proof is False:
             hash_operation = hashlib.sha256(
-                str(new_proof**2 - previous_proof**2).encode())
-            .hexdigest()
+                str(new_proof**2 - previous_proof**2).encode()
+            ).hexdigest()
 
             if hash_operation[:4] == '0000':
                 check_proof = True
@@ -98,3 +98,7 @@ def get_chain():
     }
 
     return jsonify(response), 200
+
+
+app.run(host="0.0.0.0", port=5000,
+        debug=True, use_reloader=True)
