@@ -1,7 +1,7 @@
 import hashlib
 
 
-def proof_of_work(self, previous_proof):
+def proof_of_work(previous_proof):
     new_proof = 1
     check_proof = False
 
