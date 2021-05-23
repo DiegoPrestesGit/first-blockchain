@@ -1,12 +1,15 @@
 import datetime
 import hashlib
 import json
+from urllib.parse import urlparse
+import requests
 
 
 class Blockchain:
     def __init__(self):
         self.chain = []
         self.transactions = []
+        self.nodes = set()
         self.create_block(proof=1, previous_hash='0')
 
     def create_block(self, proof, previous_hash):
@@ -58,6 +61,10 @@ class Blockchain:
             'receiver': receiver,
             'amount': amount
         })
+
+    def add_node(self, address):
+        parsed_url = urlparse(address)
+        self.nodes.add(parsed_url.netloc)
 
     def proof_of_work(self, previous_proof):
         new_proof = 1
