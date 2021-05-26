@@ -81,5 +81,21 @@ def connect_node():
     return jsonify(response), 201
 
 
+@app.route('/replace_chain', methodos=['GET'])
+def replace_chain():
+    is_chain_replaced = blockchain.replace_chain()
+    if is_chain_replaced:
+        response = {
+            'message': 'chain has been replaced',
+            'new_chain': blockchain.chain
+        }
+    else:
+        response = {
+            'message': 'xqdl',
+            'actual_chain': blockchain.chain
+        }
+    return jsonify(response), 200
+
+
 app.run(host="0.0.0.0", port=5000,
         debug=True, use_reloader=True)
