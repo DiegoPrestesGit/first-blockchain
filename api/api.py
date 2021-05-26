@@ -1,4 +1,6 @@
-from flask import Flask, jsonify
+from uuid import uuid4
+import requests
+from flask import Flask, jsonify, request
 from .blockchain import Blockchain
 
 app = Flask(__name__)
@@ -11,13 +13,21 @@ def mine_block():
     previous_proof = previous_block['proof']
     proof = blockchain.proof_of_work(previous_proof)
     previous_hash = blockchain.hash(previous_block)
+
+    blockchain.add_transaction(
+        sender=str(uuid4()).replace('-', ''),
+        receiver='Johnny B Goode',
+        amount=1
+    )
+
     block = blockchain.create_block(proof, previous_hash)
     response = {
         'message': 'block successfully mined',
         'index': block['index'],
         'timestamp': block['timestamp'],
         'proof': block['proof'],
-        'previous_hash': block['previous_hash']
+        'previous_hash': block['previous_hash'],
+        'transaction': block['transactions']
     }
 
     return jsonify(response), 200
@@ -41,6 +51,19 @@ def is_valid():
     else:
         response = {'message': 'blockchain is NOT valid'}
     return response
+
+
+@app.route('/add_transaction', methods=['POST'])
+def add_transaction():
+    json = request.get_json()
+    transaction_keys = ['sender', 'receiver', 'amount']
+
+    if not all(key in json for key in transaction_keys):
+        return 'some key element(s) missing', 400
+
+    index = blockchain.add_transaction(json['sender'], json['receiver'], json['amount'])
+    response = {'message': f'transaction added: {index}'}
+    return jsonify(response), 201
 
 
 app.run(host="0.0.0.0", port=5000,
