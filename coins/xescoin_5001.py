@@ -1,0 +1,2 @@
+class Xescoin:
+    print('todo')
