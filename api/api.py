@@ -70,6 +70,7 @@ def add_transaction():
 def connect_node():
     json = request.get_json()
     nodes = json.get('nodes')
+
     if nodes is None:
         return 'cannot get nodes', 400
     for node in nodes:
@@ -91,7 +92,7 @@ def replace_chain():
         }
     else:
         response = {
-            'message': 'xqdl',
+            'message': 'no need to replace the chain',
             'actual_chain': blockchain.chain
         }
     return jsonify(response), 200
